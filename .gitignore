@@ -1,0 +1,5 @@
+﻿Backend/.vs
+Backend/packages
+Backend/obj/Debug
+Backend/bin/roslyn
+Backend/bin
