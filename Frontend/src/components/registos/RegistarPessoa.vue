@@ -33,6 +33,14 @@
           <input type="radio" v-model="input.genero" name="O" value="O"> Outro
           <br>
         </div>
+         <div class="subscritor">
+          <label>Subscritor:<i class="obrigatorio">*</i></label>
+          <br>
+          <input type="radio" v-model="input.subscritor" name="Sim" value="1"> Subscritor
+          <br>
+          <input type="radio" v-model="input.subscritor" name="Nao" value="0"> Não subscritor
+          <br>
+        </div>
         <div class="zona">
           <label>Zona:<i class="obrigatorio">*</i></label>
           <br>
@@ -47,7 +55,7 @@
           <label>NIF:</label>
           <br>
           <input type="text" v-model="input.nif" name="nif">
-        </div>
+        </div>         
         <div class="comoConheceu">
           <label>Como Conheceu:<i class="obrigatorio">*</i></label>
           <br>
@@ -133,6 +141,7 @@ export default {
         email: "",
         genero: "",
         telefone: "",
+        subscritor: "",
         zona: "",
         nif: "",
         dataNasc: "",
@@ -151,6 +160,7 @@ export default {
       this.input.inputPessoa = "",
       this.input.email = "",
       this.input.genero = "",
+      this.input.subscritor = "";
       this.input.telefone = "",
       this.input.zona = "",
       this.input.nif = "",
@@ -182,9 +192,12 @@ export default {
           this.input.zona == "" ||
           this.input.zona == null ||
           this.input.genero == "" ||
-          this.input.genero == null ||
+          this.input.genero == null ||          
+          this.input.subscritor == "" ||
+          this.input.subscritor == null ||
           this.input.dataNasc == "" ||
           this.input.dataNasc == null
+          
         ) {
           this.$toasted.error("Campos em falta!");
           return;
@@ -236,6 +249,7 @@ export default {
               zona: this.input.zona,
               dataNasc: this.input.dataNasc,
               genero: this.input.genero,
+              subscritor: this.input.subscritor,
               nif: this.input.nif == "" ? null : this.input.nif,
               comoConheceu:
                 this.input.comoConheceu === "Local"
@@ -396,6 +410,7 @@ h1 {
   grid-column-start: 2;
   grid-row-start: 4;
 }
+
 
 .registarPessoa .comoConheceu select {
   height: 30px;

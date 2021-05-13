@@ -39,6 +39,14 @@
           <br>
           <input type="radio" v-model="input.genero" name="f" value="F"> F
           <br>
+        </div>        
+        <div class="subscritor">
+          <label>Subscritor:<i class="obrigatorio">*</i></label>
+          <br>
+          <input type="radio" v-model="input.subscritor" name="s" value="1"> Subcritor
+          <br>
+          <input type="radio" v-model="input.subscritor" name="n" value="0"> Não subscritor
+          <br>
         </div>
         <div class="zona">
           <label>Zona:<i class="obrigatorio">*</i></label>
@@ -147,6 +155,7 @@ export default {
     this.input.nome = this.dadosPessoa.nome;
     this.input.email = this.dadosPessoa.email;
     this.input.genero = this.dadosPessoa.genero;
+    this.input.subscritor = this.dadosPessoa.subscritor;
     this.input.telefone = this.dadosPessoa.telefone;
     this.input.zona = this.dadosPessoa.zona;
     this.input.nif = this.dadosPessoa.nif;
@@ -167,6 +176,7 @@ export default {
     this.input.nome = "";
     this.input.email = "";
     this.input.genero = "";
+    this.input.subscritor = "";
     this.input.telefone = "";
     this.input.zona = "";
     this.input.nif = "";
@@ -183,6 +193,7 @@ export default {
         inputPessoa: "",
         email: "",
         genero: "",
+        subscritor: "",
         telefone: "",
         zona: "",
         nif: "",
@@ -222,7 +233,9 @@ export default {
           this.input.zona == "" ||
           this.input.zona == null ||
           this.input.genero == "" ||
-          this.input.genero == null ||
+          this.input.genero == null ||          
+          this.input.subscritor == "" ||
+          this.input.subscritor == null ||
           this.input.dataNasc == "" ||
           this.input.dataNasc == null
         ) {
@@ -267,6 +280,7 @@ export default {
             zona: this.input.zona,
             dataNasc: this.input.dataNasc,
             genero: this.input.genero,
+            subscritor: this.input.subscritor,
             nif: this.input.nif,
             comoConheceu:
               this.input.comoConheceu === "Local"
@@ -418,6 +432,12 @@ h1 {
   margin-right: 115px;
   grid-column-start: 2;
   grid-row-start: 3;
+}
+
+.editarPessoa .subscritor {
+  margin-right: 115px;
+  grid-column-start: 2;
+  grid-row-start: 5;
 }
 
 .editarPessoa .idade {

@@ -21,6 +21,11 @@
           <br>
           {{this.pessoaData.genero == 'M' ? 'Masculino' : this.pessoaData.genero == 'F' ? 'Feminino' : 'Outro'}}
         </div>
+        <div class="subscritor">
+          <label>Subscritor:</label>
+          <br>
+          {{this.pessoaData.subscritor == '1' ? 'Subscritor' :'Não subscritor'}}
+        </div>
         <div class="idade">
           <label>Data Nasc.:</label>
           <br>
@@ -530,6 +535,10 @@ export default {
 
 .fichaPessoa .genero{
   grid-column-start: 2;
+}
+
+.fichaPessoa .subscritor{
+  grid-column-start: 3;
 }
 
 .fichaPessoa .tabela {
