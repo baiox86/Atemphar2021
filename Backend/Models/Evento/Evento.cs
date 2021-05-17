@@ -485,6 +485,8 @@ namespace API.Models.Evento
 
                     conn.Close();
                 }
+                SMTPClient.NotificacaoEventoEmail(evento);
+
                 return true;
             }
             catch (Exception e)

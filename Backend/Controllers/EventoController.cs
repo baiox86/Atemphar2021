@@ -173,6 +173,7 @@ namespace API.Controllers
             {
                 return BadRequest("Erro ao criar Evento!");
             }
+
             return Created("Evento",evento);
         }
 

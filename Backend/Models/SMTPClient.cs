@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Mail;
 using API.Models.Evento;
+using API.Models.Pessoas;
 
 namespace API.Models
 {
@@ -117,6 +119,53 @@ namespace API.Models
                         <div>
                             <p>
                              Informamos que a sua inscrição no evento " + evento.nomeEvento + @" a realizar-se no dia "+ evento.dataEvento + @" foi realizada com sucesso.</p> 
+                            <br>
+                                Se não realizou esta inscrição, sugerimos que entre em contacto com o administrador da plataforma.
+                            <div> Obrigado. </div>
+                        </div>
+                        </body>";
+
+                smtpClient.Send(mail);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error sending inscrição evento email-> " + e.Message);
+                return false;
+            }
+        }
+
+        public static bool NotificacaoEventoEmail(Evento.Evento evento)
+        {
+            try
+            {
+                SmtpClient smtpClient = new SmtpClient(Properties.Settings.Default.SMTPServer, Properties.Settings.Default.SMTPPort);
+                smtpClient.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.FromEmail, Properties.Settings.Default.FromPassword);
+                // smtpClient.UseDefaultCredentials = true; // uncomment if you don't want to use the network credentials
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtpClient.EnableSsl = true;
+                MailMessage mail = new MailMessage();
+
+                //Setting From , To and CC
+                mail.From = new MailAddress(Properties.Settings.Default.FromEmail, Properties.Settings.Default.FromName);
+                
+                var subscritos = Pessoa.GetAllSubscribed();
+                foreach (var sub in subscritos)
+                {
+                    mail.To.Add(new MailAddress(sub.email));
+                }
+
+
+
+                mail.Subject = "ATEMPHAR Plataforma de dados - Inscrição em Evento efetuada";
+                mail.IsBodyHtml = true;
+                mail.Body = @"<head>
+                        <title>Inscrição em Evento</title>
+                        </head>
+                        <body>
+                        <div>
+                            <p>
+                             Informamos que a sua inscrição no evento " + evento.nomeEvento + @" a realizar-se no dia " + evento.dataEvento + @" foi realizada com sucesso.</p> 
                             <br>
                                 Se não realizou esta inscrição, sugerimos que entre em contacto com o administrador da plataforma.
                             <div> Obrigado. </div>

@@ -47,6 +47,8 @@ namespace API.Models.Pessoas
         [JsonProperty(PropertyName = "atravesQuemNome")]
         public string atravesQuemNome { get; set; }
 
+        [JsonProperty(PropertyName = "isSubscritor")]
+        public bool isSubscritor { get; set; }
 
         public List<Pessoa> GetAllPessoas()
         {
@@ -145,7 +147,8 @@ namespace API.Models.Pessoas
                         else{
                             sqlCommand.Parameters.AddWithValue("@atravesQuem", DBNull.Value);
                         }
-                      
+                        sqlCommand.Parameters.AddWithValue("@isSubscritor", pessoa.isSubscritor);
+
                         nrRows = sqlCommand.ExecuteNonQuery();
                         id = sqlCommand.LastInsertedId;
                     }
@@ -463,7 +466,29 @@ namespace API.Models.Pessoas
                 }
             }
         }
-      
+
+        public static List<Pessoa> GetAllSubscribed()
+        {
+            using (MySqlConnection conn = new MySqlConnection(Properties.Settings.Default.DB))
+            {
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand("select * from pessoa p WHERE p.isSubscritor", conn))
+                {
+
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    List<Pessoa> pessoas = new List<Pessoa>();
+
+
+                    while (reader.Read())
+                    {
+                        pessoas.Add(Pessoa.FromDB(reader));
+                    }
+
+                    return pessoas;
+                }
+            }
+        }
+
 
         public static Pessoa FromDB(MySqlDataReader reader)
         {
@@ -476,6 +501,7 @@ namespace API.Models.Pessoas
             string genero = reader["genero"].ToString();
             string nif = reader["nif"] == DBNull.Value ? null : reader["nif"].ToString();
             string comoConheceu = reader["comoConheceu"] == DBNull.Value ? null : reader["comoConheceu"].ToString();
+            bool isSubscritor = (reader["isSubscritor"].ToString() == "1");
      
 
             Pessoa pessoa = new Pessoa()
