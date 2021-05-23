@@ -22,7 +22,12 @@
             <option value="Tertulia">Tertúlia</option>
           </select>
         </div>
-
+        <div class="notifica">
+          <label>Notificar:<i class="obrigatorio">*</i></label>
+          <br>
+          <input type="checkbox" v-model="input.notifica" name="s" value=true> Notificar Subscritores
+          <br>
+          </div>
         <div class="data">
           <label>Data:<i class="obrigatorio">*</i></label>
           <br>
@@ -38,6 +43,12 @@
           <br>
           <textarea type="text" v-model="input.observacoes" name="observacoes"></textarea>
         </div>
+        <div class="body">
+          <label>Corpo do e-mail:</label>
+          <br>
+          <textarea type="text" v-model="input.body" name="body"></textarea>
+        </div>
+
 
         <template v-if="input.tipoEvento === 'Workshop'">
           <div class="custo">
@@ -270,6 +281,8 @@ export default {
         data: "",
         local: "",
         observacoes: "",
+        body: "",
+        notifica: true,
         custo: "",
         especialidade: "",
         notNovaPessoaOrador: true
@@ -298,11 +311,13 @@ export default {
       (this.input.nome = ""),
         (this.input.tipoEvento = ""),
         (this.input.oradorRecorrente = "true"),
+        (this.input.notifica = "true"),
         (this.input.inputOrador = ""),
         (this.input.inputPessoa = ""),
         (this.input.data = ""),
         (this.input.local = ""),
         (this.input.observacoes = ""),
+        (this.input.body = ""),
         (this.input.custo = ""),
         (this.input.especialidade = "");
     },
@@ -478,7 +493,9 @@ export default {
                       dataEvento: this.input.data,
                       localEvento: this.input.local,
                       tipoEvento: this.input.tipoEvento,
-                      observacoes: this.input.observacoes
+                      observacoes: this.input.observacoes,
+                      body: this.input.body,
+                      notifica: this.input.notifica
                     },
                     {
                       withCredentials: true,
@@ -571,7 +588,9 @@ export default {
                 dataEvento: this.input.data,
                 localEvento: this.input.local,
                 tipoEvento: this.input.tipoEvento,
-                observacoes: this.input.observacoes
+                observacoes: this.input.observacoes,
+                body: this.input.body,
+                notifica: this.input.notifica
               },
               {
                 withCredentials: true,
@@ -604,6 +623,7 @@ export default {
                 dataEvento: this.input.data,
                 localEvento: this.input.local,
                 tipoEvento: this.input.tipoEvento,
+                body: this.input.body,
                 observacoes: this.input.observacoes
               },
               {
@@ -675,7 +695,9 @@ export default {
                 dataEvento: this.input.data,
                 localEvento: this.input.local,
                 tipoEvento: this.input.tipoEvento,
-                observacoes: this.input.observacoes
+                observacoes: this.input.observacoes,
+                notifica: this.input.notifica,
+                body: this.input.body,
               },
               {
                 withCredentials: true,
@@ -744,6 +766,12 @@ export default {
   border-radius: 4px;
 }
 
+.registarEvento .notifica {
+   margin-right: 115px;
+  grid-column-start: 2;
+  grid-row-start: 3;
+}
+
 .registarEvento .tipo {
   margin-right: 115px;
   margin-top: 10px;
@@ -781,7 +809,20 @@ export default {
 .registarEvento .observacoes {
   margin-left: 115px;
 }
+
+.registarEvento .body {
+  margin-left: 115px;
+}
 .registarEvento .observacoes textarea {
+  width: 100%;
+  height: 150px;
+  box-sizing: border-box;
+  border: 1px solid #a1a0a0;
+  resize: none;
+  border-radius: 4px;
+}
+
+.registarEvento .body textarea {
   width: 100%;
   height: 150px;
   box-sizing: border-box;
