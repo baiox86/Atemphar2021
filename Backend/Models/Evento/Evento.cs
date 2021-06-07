@@ -22,6 +22,8 @@ namespace API.Models.Evento
         public string dataEvento { get; set; }
         public string tipoEvento { get; set; }
         public string observacoes { get; set; }
+        public bool notifica { get; set; }
+        public string corpoEmail { get; set; }
         public int idOrador { get; set; }
 
         public int idInquerito { get; set; }
@@ -369,6 +371,8 @@ namespace API.Models.Evento
             string observacoes = reader["observacoes"].ToString();
             int idOrador = (int)reader["idOrador"];
             string tipoEvento = reader["tipoEvento"].ToString();
+            bool notifica = (bool) reader["notifica"];
+            string corpoEmail = reader["corpomail"].ToString();
 
             return new Evento(){
                 idEvento = idEvento,
@@ -377,7 +381,9 @@ namespace API.Models.Evento
                 dataEvento = dataEvento,
                 observacoes = observacoes,
                 idOrador = idOrador,
-                tipoEvento = tipoEvento
+                tipoEvento = tipoEvento,
+                notifica = notifica,
+                corpoEmail = corpoEmail
             };
 
 
@@ -462,7 +468,7 @@ namespace API.Models.Evento
                 using (MySqlConnection conn = new MySqlConnection(Properties.Settings.Default.DB))
                 {
                     conn.Open();
-                    using (MySqlCommand sqlCommand = new MySqlCommand("INSERT INTO `evento` (idOrador, nomeEvento, dataEvento, localEvento, tipoEvento, observacoes) VALUES (@idOrador, @nomeEvento, @dataEvento, @localEvento, @tipoEvento, @observacoes)", conn))
+                    using (MySqlCommand sqlCommand = new MySqlCommand("INSERT INTO `evento` (idOrador, nomeEvento, dataEvento, localEvento, tipoEvento, observacoes, notifica, corpomail) VALUES (@idOrador, @nomeEvento, @dataEvento, @localEvento, @tipoEvento, @observacoes, @notifica, @corpomail)", conn))
                     {
                         if (evento.idOrador == 0)
                         {
@@ -478,14 +484,20 @@ namespace API.Models.Evento
                         sqlCommand.Parameters.AddWithValue("@localEvento", evento.localEvento);
                         sqlCommand.Parameters.AddWithValue("@tipoEvento", evento.tipoEvento);
                         sqlCommand.Parameters.AddWithValue("@observacoes", evento.observacoes);
+                        sqlCommand.Parameters.AddWithValue("@notifica", evento.notifica);
+                        sqlCommand.Parameters.AddWithValue("@corpomail", evento.corpoEmail);
 
                         sqlCommand.ExecuteNonQuery();
+                    }
+
+                    if (evento.notifica)
+                    {
+                        SMTPClient.NotificacaoEventoEmail(evento);
                     }
 
 
                     conn.Close();
                 }
-                SMTPClient.NotificacaoEventoEmail(evento);
 
                 return true;
             }

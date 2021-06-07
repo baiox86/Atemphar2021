@@ -70,6 +70,26 @@ namespace API.Models.Pessoas
             return pessoas;
         }
 
+        public List<Pessoa> GetAllPessoasSubscritas()
+        {
+            List<Pessoa> pessoas = new List<Pessoa>();
+            using (MySqlConnection conn = new MySqlConnection(Properties.Settings.Default.DB))
+            {
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM pessoa where isSubscritor=true", conn))
+                {
+
+                    MySqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        pessoas.Add(Pessoa.FromDB(reader));
+                    }
+                    conn.Close();
+                }
+            }
+            return pessoas;
+        }
+
         public List<JObject> GetAllPessoasIdNome()
         {
             List<JObject> objects = new List<JObject>();

@@ -140,8 +140,8 @@ namespace API.Models
             try
             {
                 SmtpClient smtpClient = new SmtpClient(Properties.Settings.Default.SMTPServer, Properties.Settings.Default.SMTPPort);
+                smtpClient.UseDefaultCredentials = false; // uncomment if you don't want to use the network credentials
                 smtpClient.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.FromEmail, Properties.Settings.Default.FromPassword);
-                // smtpClient.UseDefaultCredentials = true; // uncomment if you don't want to use the network credentials
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtpClient.EnableSsl = true;
                 MailMessage mail = new MailMessage();
@@ -157,20 +157,25 @@ namespace API.Models
 
 
 
-                mail.Subject = "ATEMPHAR Plataforma de dados - Inscrição em Evento efetuada";
+                mail.Subject = "ATEMPHAR Plataforma de dados - Novo Evento!";
                 mail.IsBodyHtml = true;
-                mail.Body = @"<head>
-                        <title>Inscrição em Evento</title>
-                        </head>
-                        <body>
-                        <div>
-                            <p>
-                             Informamos que a sua inscrição no evento " + evento.nomeEvento + @" a realizar-se no dia " + evento.dataEvento + @" foi realizada com sucesso.</p> 
-                            <br>
-                                Se não realizou esta inscrição, sugerimos que entre em contacto com o administrador da plataforma.
-                            <div> Obrigado. </div>
-                        </div>
-                        </body>";
+                if (evento.corpoEmail == null)
+                {
+                    mail.Body = @"<head>
+                            <title>Novo evento</title>
+                            </head>
+                            <body>
+                            <div>
+                                <p>
+                                 Informamos que irá decorrer um evento - " + evento.nomeEvento + @" - a realizar-se no dia " + evento.dataEvento + @".</p> 
+                                <br>
+                                    .
+                                <div> Obrigado. </div>
+                            </div>
+                            </body>";
+                }
+                else mail.Body = evento.corpoEmail;
+
 
                 smtpClient.Send(mail);
                 return true;

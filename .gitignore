@@ -3,3 +3,4 @@ Backend/packages
 Backend/obj/Debug
 Backend/bin/roslyn
 Backend/bin
+Frontend/node_modules
